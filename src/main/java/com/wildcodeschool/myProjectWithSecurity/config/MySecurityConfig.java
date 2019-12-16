@@ -18,11 +18,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 		@Override
-		public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/");
-        	
+		public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/").permitAll();  
+        http.authorizeRequests().antMatchers("/avengers/assemble").hasRole("CHAMPION")
+        .and().formLogin().and().httpBasic();
+        http.authorizeRequests().antMatchers("/secret-bases").hasRole("DIRECTOR")
+        .and().formLogin().and().httpBasic();
 		}
 
   
@@ -37,12 +38,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter{
 	    	
 	        
 	        .withUser("Steve")
-	        .password(encoder.encode("CHAMPIONNickflerkenDIRECTOR"))
-	        .roles("ADMIN")
+	        .password(encoder.encode("motdepasse"))
+	        .roles("CHAMPION")
 	        .and()
-	        .withUser("SHIELD")
-	        .password(encoder.encode("password2"))
-	        .roles("USER");
+	        .withUser("Nick")
+	        .password(encoder.encode("flerken"))
+	        .roles("DIRECTOR");
 	    
 	   
 	}
